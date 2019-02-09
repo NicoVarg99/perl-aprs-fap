@@ -108,7 +108,7 @@ our @EXPORT_OK = (
 );
 
 ##our @EXPORT = qw(
-##	
+##
 ##);
 
 our $VERSION = '1.21';
@@ -121,86 +121,86 @@ my $debug = 0;
 
 my %result_messages = (
 	'unknown' => 'Unsupported packet format',
-	
+
 	'packet_no' => 'No packet given to parse',
 	'packet_short' => 'Too short packet',
 	'packet_nobody' => 'No body in packet',
-	
+
 	'srccall_noax25' => 'Source callsign is not a valid AX.25 call',
 	'srccall_badchars' => 'Source callsign contains bad characters',
-	
+
 	'dstpath_toomany' => 'Too many destination path components to be AX.25',
 	'dstcall_none' => 'No destination field in packet',
 	'dstcall_noax25' => 'Destination callsign is not a valid AX.25 call',
-	
+
 	'digicall_noax25' => 'Digipeater callsign is not a valid AX.25 call',
 	'digicall_badchars' => 'Digipeater callsign contains bad characters',
-	
+
 	'timestamp_inv_loc' => 'Invalid timestamp in location',
 	'timestamp_inv_obj' => 'Invalid timestamp in object',
 	'timestamp_inv_sta' => 'Invalid timestamp in status',
 	'timestamp_inv_gpgga' => 'Invalid timestamp in GPGGA sentence',
 	'timestamp_inv_gpgll' => 'Invalid timestamp in GPGLL sentence',
-	
+
 	'packet_invalid' => 'Invalid packet',
-	
+
 	'nmea_inv_cval' => 'Invalid coordinate value in NMEA sentence',
 	'nmea_large_ew' => 'Too large value in NMEA sentence (east/west)',
 	'nmea_large_ns' => 'Too large value in NMEA sentence (north/south)',
 	'nmea_inv_sign' => 'Invalid lat/long sign in NMEA sentence',
 	'nmea_inv_cksum' => 'Invalid checksum in NMEA sentence',
-	
+
 	'gprmc_fewfields' => 'Less than ten fields in GPRMC sentence ',
 	'gprmc_nofix' => 'No GPS fix in GPRMC sentence',
 	'gprmc_inv_time' => 'Invalid timestamp in GPRMC sentence',
 	'gprmc_inv_date' => 'Invalid date in GPRMC sentence',
 	'gprmc_date_out' => 'GPRMC date does not fit in an Unix timestamp',
-	
+
 	'gpgga_fewfields' => 'Less than 11 fields in GPGGA sentence',
 	'gpgga_nofix' => 'No GPS fix in GPGGA sentence',
-	
+
 	'gpgll_fewfields' => 'Less than 5 fields in GPGLL sentence',
 	'gpgll_nofix' => 'No GPS fix in GPGLL sentence',
-	
+
 	'nmea_unsupp' => 'Unsupported NMEA sentence type',
-	
+
 	'obj_short' => 'Too short object',
 	'obj_inv' => 'Invalid object',
 	'obj_dec_err' => 'Error in object location decoding',
-	
+
 	'item_short' => 'Too short item',
 	'item_inv' => 'Invalid item',
 	'item_dec_err' => 'Error in item location decoding',
-	
+
 	'loc_short' => 'Too short uncompressed location',
 	'loc_inv' => 'Invalid uncompressed location',
 	'loc_large' => 'Degree value too large',
 	'loc_amb_inv' => 'Invalid position ambiguity',
-	
+
 	'mice_short' => 'Too short mic-e packet',
 	'mice_inv' => 'Invalid characters in mic-e packet',
 	'mice_inv_info' => 'Invalid characters in mic-e information field',
 	'mice_amb_large' => 'Too much position ambiguity in mic-e packet',
 	'mice_amb_inv' => 'Invalid position ambiguity in mic-e packet',
 	'mice_amb_odd' => 'Odd position ambiguity in mic-e packet',
-	
+
 	'comp_inv' => 'Invalid compressed packet',
-	
+
 	'msg_inv' => 'Invalid message packet',
-	
+
 	'wx_unsupp' => 'Unsupported weather format',
 	'user_unsupp' => 'Unsupported user format',
-	
+
 	'dx_inv_src' => 'Invalid DX spot source callsign',
 	'dx_inf_freq' => 'Invalid DX spot frequency',
 	'dx_no_dx' => 'No DX spot callsign found',
-	
+
 	'tlm_inv' => 'Invalid telemetry packet',
 	'tlm_large' => 'Too large telemetry value',
 	'tlm_unsupp' => 'Unsupported telemetry',
-	
+
 	'exp_unsupp' => 'Unsupported experimental',
-	
+
 	'sym_inv_table' => 'Invalid symbol table or overlay',
 );
 
@@ -227,14 +227,14 @@ sub result_messages()
 sub _a_err($$;$)
 {
 	my ($rethash, $errcode, $val) = @_;
-	
+
 	$rethash->{'resultcode'} = $errcode;
 	$rethash->{'resultmsg'}
 		= defined $result_messages{$errcode}
 		? $result_messages{$errcode} : $errcode;
-	
+
 	$rethash->{'resultmsg'} .= ': ' . $val if (defined $val);
-	
+
 	if ($debug > 0) {
 		warn "Ham::APRS::FAP ERROR $errcode: " . $rethash->{'resultmsg'} . "\n";
 	}
@@ -243,9 +243,9 @@ sub _a_err($$;$)
 sub _a_warn($$;$)
 {
 	my ($rethash, $errcode, $val) = @_;
-	
+
 	push @{ $rethash->{'warncodes'} }, $errcode;
-	
+
 	if ($debug > 0) {
 		warn "Ham::APRS::FAP WARNING $errcode: "
 		    . (defined $result_messages{$errcode}
@@ -447,13 +447,13 @@ sub distance($$$$) {
 	my $lat0 = shift @_;
 	my $lon1 = shift @_;
 	my $lat1 = shift @_;
-	
+
 	# decimal to radian
 	$lon0 = deg2rad($lon0);
 	$lon1 = deg2rad($lon1);
 	$lat0 = deg2rad($lat0);
 	$lat1 = deg2rad($lat1);
-	
+
 	# Use the haversine formula for distance calculation
 	# http://mathforum.org/library/drmath/view/51879.html
 	my $dlon = $lon1 - $lon0;
@@ -626,32 +626,32 @@ sub count_digihops($) {
 # If an invalid timestamp is given, return 0.
 sub _parse_timestamp($$) {
 	my($options, $stamp) = @_;
-	
+
 	# Check initial format
 	return 0 if ($stamp !~ /^(\d{2})(\d{2})(\d{2})(z|h|\/)$/o);
-	
+
 	return "$1$2$3" if ($options->{'raw_timestamp'});
-	
+
 	my $stamptype = $4;
-	
+
 	if ($stamptype eq 'h') {
 		# HMS format
 		my $hour = $1;
 		my $minute = $2;
 		my $second = $3;
-		
+
 		# Check for invalid time
 		if ($hour > 23 || $minute > 59 || $second > 59) {
 			return 0;
 		}
-		
+
 		# All calculations here are in UTC, but
 		# if this is run under old MacOS (pre-OSX), then
 		# Date_to_Time could be in local time..
 		my $currenttime = time();
 		my ($cyear, $cmonth, $cday) = Today(1);
 		my $tstamp = Date_to_Time($cyear, $cmonth, $cday, $hour, $minute, $second);
-		
+
 		# If the time is more than about one hour
 		# into the future, roll the timestamp
 		# one day backwards.
@@ -673,11 +673,11 @@ sub _parse_timestamp($$) {
 		my $day = $1;
 		my $hour = $2;
 		my $minute = $3;
-		
+
 		if ($day < 1 || $day > 31 || $hour > 23 || $minute > 59) {
 			return 0;
 		}
-		
+
 		# If time is under about 12 hours into
 		# the future, go there.
 		# Otherwise get the first matching
@@ -741,7 +741,7 @@ sub _cleanup_comment($)
 	$_[0] =~ tr/[\x20-\x7e\x80-\xfe]//cd;
 	$_[0] =~ s/^\s+//;
 	$_[0] =~ s/\s+$//;
-	
+
 	return $_[0];
 }
 
@@ -764,7 +764,7 @@ sub _get_posresolution($)
 sub _nmea_getlatlon($$$)
 {
 	my ($value, $sign, $rh) = @_;
-	
+
 	# upcase the sign for compatibility
 	$sign = uc($sign);
 
@@ -917,7 +917,7 @@ sub _nmea_to_decimal($$$$$) {
 	# checksum ok or not provided
 
 	$rethash->{'format'} = 'nmea';
-	
+
 	# use a dot as a default symbol if one is not defined in
 	# the destination callsign
 	my ($symtable, $symcode) = _get_symbol_fromdst($dstcallsign);
@@ -1142,7 +1142,7 @@ sub _comments_to_decimal($$$) {
 	my $rest = shift @_;
 	my $srccallsign = shift @_;
 	my $rethash = shift @_;
-	
+
 	# First check the possible APRS data extension,
 	# immediately following the packet
 	if (length($rest) >= 7) {
@@ -1197,7 +1197,7 @@ sub _comments_to_decimal($$$) {
 
 	# Check for new-style base-91 comment telemetry
 	$rest = _comment_telemetry($rethash, $rest);
-	
+
 	# Check for !DAO!, take the last occurrence (per recommendation)
 	if ($rest =~ /^(.*)\!([\x21-\x7b][\x20-\x7b]{2})\!(.*?)$/o) {
 		my $daofound = _dao_parse($2, $srccallsign, $rethash);
@@ -1205,11 +1205,11 @@ sub _comments_to_decimal($$$) {
 			$rest = $1 . $3;
 		}
 	}
-	
+
 	# Strip a / or a ' ' from the beginning of a comment
 	# (delimiter after PHG or other data stuffed within the comment)
 	$rest =~ s/^[\/\s]//;
-	
+
 	# Save the rest as a separate comment, if
 	# anything is left (trim unprintable chars
 	# out first and white space from both ends)
@@ -1342,7 +1342,7 @@ sub _capabilities_parse($$$) {
 		$rethash->{'capabilities'} = \%caphash;
 		return 1;
 	}
-	
+
 	# at least one capability has to be defined for a capability
 	# packet to be counted as valid
 	return 0;
@@ -1387,9 +1387,9 @@ sub _message_parse($$$) {
 		}
 		return 1;
 	}
-	
+
 	_a_err($rethash, 'msg_inv');
-	
+
 	return 0;
 }
 
@@ -1397,7 +1397,7 @@ sub _message_parse($$$) {
 sub _comment_telemetry($$)
 {
 	my($rethash, $rest) = @_;
-	 
+
 	if ($rest =~ /^(.*)\|([!-{]{2})([!-{]{2})([!-{]{2}|)([!-{]{2}|)([!-{]{2}|)([!-{]{2}|)([!-{]{2}|)\|(.*)$/) {
 		$rest = $1 . $9;
 		$rethash->{'telemetry'} = {
@@ -1424,7 +1424,7 @@ sub _comment_telemetry($$)
 			$rethash->{'telemetry'}->{'bits'} = unpack('b8', pack('C', $bitint));
 		}
 	}
-	
+
 	return $rest;
 }
 
@@ -1495,9 +1495,9 @@ sub _normalpos_to_decimal($$$) {
 		_a_err($rethash, 'loc_short');
 		return 0;
 	}
-	
+
 	$rethash->{'format'} = 'uncompressed';
-	
+
 	# Make a more detailed check on the format, but do the
 	# actual value checks later
 	my $lon_deg = undef;
@@ -1526,13 +1526,13 @@ sub _normalpos_to_decimal($$$) {
 		_a_err($rethash, 'loc_inv');
 		return 0;
 	}
-	
+
 	if ($symboltable !~ /^[\/\\A-Z0-9]$/) {
 		_a_err($rethash, 'sym_inv_table');
 		return 0;
 	}
 	$rethash->{'symboltable'} = $symboltable;
-	
+
 	# Check the degree values
 	if ($lat_deg > 89 || $lon_deg > 179) {
 		_a_err($rethash, 'loc_large');
@@ -1628,7 +1628,7 @@ sub _mice_to_decimal($$$$$) {
 	$dstcallsign =~ s/-\d+$//;
 
 	$rethash->{'format'} = 'mice';
-	
+
 	# Check the format
 	if (length($packet) < 8 || length($dstcallsign) != 6) {
 		# too short packet to be mic-e
@@ -1641,7 +1641,7 @@ sub _mice_to_decimal($$$$$) {
 		_a_err($rethash, 'mice_inv');
 		return 0;
 	}
-	
+
 	# check the information field (longitude, course, speed and
 	# symbol table and code are checked). Not bullet proof..
 	my $mice_fixed;
@@ -1825,7 +1825,7 @@ sub _mice_to_decimal($$$$$) {
 	# below sea.
 	if (length($packet) > 8) {
 		my $rest = substr($packet, 8);
-		
+
 		# check for Mic-E Telemetry Data
 		if ($rest =~ /^'([0-9a-f]{2})([0-9a-f]{2})(.*)$/i) {
 			# two hexadecimal values: channels 1 and 3
@@ -1841,7 +1841,7 @@ sub _mice_to_decimal($$$$$) {
 				'vals' => [ unpack('C*', pack('H*', $1)) ]
 			};
 		}
-		
+
 		# check for altitude
 		if ($rest =~ /^(.*?)([\x21-\x7b])([\x21-\x7b])([\x21-\x7b])\}(.*)$/o) {
 			$rethash->{'altitude'} = (
@@ -1853,7 +1853,7 @@ sub _mice_to_decimal($$$$$) {
 
                 # Check for new-style base-91 comment telemetry
                 $rest = _comment_telemetry($rethash, $rest);
-                
+
                 # Check for !DAO!, take the last occurrence (per recommendation)
                 if ($rest =~ /^(.*)\!([\x21-\x7b][\x20-\x7b]{2})\!(.*?)$/o) {
                         my $daofound = _dao_parse($2, $srccallsign, $rethash);
@@ -1861,7 +1861,7 @@ sub _mice_to_decimal($$$$$) {
                                 $rest = $1 . $3;
                         }
                 }
-                
+
                 # If anything is left, store it as a comment
 		# after removing non-printable ASCII
 		# characters
@@ -1869,12 +1869,12 @@ sub _mice_to_decimal($$$$$) {
 			$rethash->{'comment'} = _cleanup_comment($rest);
 		}
 	}
-	
+
 	if ($mice_fixed) {
 		$rethash->{'mice_mangled'} = 1;
 		#warn "$srccallsign: fixed packet was parsed\n";
 	}
-	
+
 	return 1;
 }
 
@@ -1892,7 +1892,7 @@ sub _compressed_to_decimal($$$)
 	}
 
 	$rethash->{'format'} = 'compressed';
-	
+
 	my $symboltable = substr($packet, 0, 1);
 	my $lat1 = ord(substr($packet, 1, 1)) - 33;
 	my $lat2 = ord(substr($packet, 2, 1)) - 33;
@@ -2069,13 +2069,13 @@ sub check_ax25_call($) {
 sub _dx_parse($$$)
 {
 	my ($sourcecall, $info, $rh) = @_;
-	
+
 	if (!defined check_ax25_call($sourcecall)) {
 		_a_err($rh, 'dx_inv_src', $sourcecall);
 		return 0;
 	}
 	$rh->{'dxsource'} = $sourcecall;
-	
+
 	$info =~ s/^\s*(.*?)\s*$/$1/; # strip whitespace
 	if ($info =~ s/\s*(\d{3,4}Z)//) {
 		$rh->{'dxtime'} = $1;
@@ -2084,10 +2084,10 @@ sub _dx_parse($$$)
 	$rh->{'dxfreq'} = $1;
 	_a_err($rh, 'dx_no_dx') if ($info !~ s/^([a-zA-Z0-9-\/]+)\s*//);
 	$rh->{'dxcall'} = $1;
-	
+
 	$info =~ s/\s+/ /g;
 	$rh->{'dxinfo'} = $info;
-	
+
 	return 1;
 }
 
@@ -2104,9 +2104,9 @@ sub _fahrenheit_to_celsius($)
 sub _wx_parse($$)
 {
 	my ($s, $rh) = @_;
-	
+
 	#my $initial = $s;
-	
+
 	# 257/007g013t055r000P000p000h56b10160v31
 	# 045/000t064r000p000h35b10203.open2300v1.10
 	# 175/007g007p...P000r000t062h32b10224wRSW
@@ -2129,16 +2129,16 @@ sub _wx_parse($$)
 		#warn "wx_parse: no initial match: $s\n";
 		return 0;
 	}
-	
+
 	if (!defined $temp && $s =~ s/t(-{0,1}\d{1,3})//) {
 		$temp = $1;
 	}
-	
+
 	$w{'wind_gust'} = sprintf('%.1f', $wind_gust * $mph_to_ms) if ($wind_gust =~ /^\d+$/);
 	$w{'wind_direction'} = sprintf('%.0f', $wind_dir) if ($wind_dir =~ /^\d+$/);
 	$w{'wind_speed'} = sprintf('%.1f', $wind_speed * $mph_to_ms) if ($wind_speed =~ /^\d+$/);
 	$w{'temp'} = sprintf('%.1f', _fahrenheit_to_celsius($temp)) if ($temp =~ /^-{0,1}\d+$/);
-	
+
 	if ($s =~ s/r(\d{1,3})//) {
 		$w{'rain_1h'} = sprintf('%.1f', $1*$hinch_to_mm); # during last 1h
 	}
@@ -2148,37 +2148,37 @@ sub _wx_parse($$)
 	if ($s =~ s/P(\d{1,3})//) {
 		$w{'rain_midnight'} = sprintf('%.1f', $1*$hinch_to_mm); # since midnight
 	}
-	
+
 	if ($s =~ s/h(\d{1,3})//) {
 		$w{'humidity'} = sprintf('%.0f', $1); # percentage
 		$w{'humidity'} = 100 if ($w{'humidity'} eq 0);
 		undef $w{'humidity'} if ($w{'humidity'} > 100 || $w{'humidity'} < 1);
 	}
-	
+
 	if ($s =~ s/b(\d{4,5})//) {
 		$w{'pressure'} = sprintf('%.1f', $1/10); # results in millibars
 	}
-	
+
 	if ($s =~ s/([lL])(\d{1,3})//) {
 		$w{'luminosity'} = sprintf('%.0f', $2); # watts / m2
 		$w{'luminosity'} += 1000 if ($1 eq 'l');
 	}
-	
+
 	if ($s =~ s/v([\-\+]{0,1}\d+)//) {
 		# what ?
 	}
-	
+
 	if ($s =~ s/s(\d{1,3})//) {
 		# snowfall
 		$w{'snow_24h'} = sprintf('%.1f', $1*$hinch_to_mm);
 	}
-	
+
 	if ($s =~ s/#(\d+)//) {
 		# raw rain counter
 	}
-	
+
 	$s =~ s/^([rPphblLs#][\. ]{1,5})+//;
-	
+
 	$s =~ s/^\s+//;
 	$s =~ s/\s+/ /;
 	if ($s =~ /^[a-zA-Z0-9\-_]{3,5}$/) {
@@ -2186,7 +2186,7 @@ sub _wx_parse($$)
 	} else {
 		$rh->{'comment'} = _cleanup_comment($s);
 	}
-	
+
 	if (defined $w{'temp'}
 	    || (defined $w{'wind_speed'} && defined $w{'wind_direction'})
 	    	) {
@@ -2194,7 +2194,7 @@ sub _wx_parse($$)
 	    		$rh->{'wx'} = \%w;
 	    		return 1;
 	}
-	
+
 	return 0;
 }
 
@@ -2206,7 +2206,7 @@ sub _wx_parse($$)
 sub _wx_parse_peet_packet($$$)
 {
 	my ($s, $sourcecall, $rh) = @_;
-	
+
 	#warn "\$ULTW: $s\n";
 	# 0000000001FF000427C70002CCD30001026E003A050F00040000
 	my %w;
@@ -2221,12 +2221,12 @@ sub _wx_parse_peet_packet($$$)
 			# Perl 5.10 unpack supports n! for signed ints, 5.8
 			# requires tricks like this:
 			my $v = unpack('n', pack('H*', $1));
-			
+
 			push @vals, ($v < 32768) ? $v : $v - 65536;
 		}
 	}
 	return 0 if (!@vals);
-	
+
 	$t = shift @vals;
 	$w{'wind_gust'} = sprintf('%.1f', $t * $kmh_to_ms / 10) if (defined $t);
 	$t = shift @vals;
@@ -2251,7 +2251,7 @@ sub _wx_parse_peet_packet($$$)
 	$w{'rain_midnight'} = sprintf('%.1f', $t * $hinch_to_mm) if (defined $t);
 	$t = shift @vals;
 	$w{'wind_speed'} = sprintf('%.1f', $t * $kmh_to_ms / 10) if (defined $t);
-	
+
 	if (defined $w{'temp'}
 	    || (defined $w{'wind_speed'} && defined $w{'wind_direction'})
 	    || (defined $w{'pressure'})
@@ -2260,19 +2260,19 @@ sub _wx_parse_peet_packet($$$)
 	    		$rh->{'wx'} = \%w;
 	    		return 1;
 	}
-	
+
 	return 0;
 }
 
 # _wx_parse_peet_logging($s, $sourcecall, $rethash)
-# 
+#
 # Parses a Peet bros Ultimeter weather logging frame (!! header).
 #
 
 sub _wx_parse_peet_logging($$$)
 {
 	my ($s, $sourcecall, $rh) = @_;
-	
+
 	#warn "\!!: $s\n";
 	# 0000000001FF000427C70002CCD30001026E003A050F00040000
 	my %w;
@@ -2287,12 +2287,12 @@ sub _wx_parse_peet_logging($$$)
 			# Perl 5.10 unpack supports n! for signed ints, 5.8
 			# requires tricks like this:
 			my $v = unpack('n', pack('H*', $1));
-			
+
 			push @vals, ($v < 32768) ? $v : $v - 65536;
 		}
 	}
 	return 0 if (!@vals);
-	
+
 	$t = shift @vals; # instant wind speed
 	$w{'wind_speed'} = sprintf('%.1f', $t * $kmh_to_ms / 10) if (defined $t);
 	$t = shift @vals;
@@ -2321,11 +2321,11 @@ sub _wx_parse_peet_logging($$$)
 	$w{'rain_midnight'} = sprintf('%.1f', $t * $hinch_to_mm) if (defined $t);
 	$t = shift @vals; # avg wind speed
 	$w{'wind_speed'} = sprintf('%.1f', $t * $kmh_to_ms / 10) if (defined $t);
-	
+
 	# if inside temperature exists but no outside, use inside
 	$w{'temp'} = $w{'temp_in'} if (defined $w{'temp_in'} && !defined $w{'temp'});
 	$w{'humidity'} = $w{'humidity_in'} if (defined $w{'humidity_in'} && !defined $w{'humidity'});
-	
+
 	if (defined $w{'temp'}
 	    || (defined $w{'wind_speed'} && defined $w{'wind_direction'})
 	    || (defined $w{'pressure'})
@@ -2334,7 +2334,7 @@ sub _wx_parse_peet_logging($$$)
 	    		$rh->{'wx'} = \%w;
 	    		return 1;
 	}
-	
+
 	return 0;
 }
 
@@ -2346,9 +2346,9 @@ sub _wx_parse_peet_logging($$$)
 sub _telemetry_parse($$)
 {
 	my ($s, $rh) = @_;
-	
+
 	my $initial = $s;
-	
+
 	my ($seq, $v1, $v2, $v3, $v4, $v5, $bits);
 	my %t;
 	if ($s =~ s/^(\d+),(-|)(\d{1,6}|\d+\.\d+|\.\d+|),(-|)(\d{1,6}|\d+\.\d+|\.\d+|),(-|)(\d{1,6}|\d+\.\d+|\.\d+|),(-|)(\d{1,6}|\d+\.\d+|\.\d+|),(-|)(\d{1,6}|\d+\.\d+|\.\d+|),([01]{0,8})//) {
@@ -2372,7 +2372,7 @@ sub _telemetry_parse($$)
 		_a_err($rh, 'tlm_inv');
 		return 0;
 	}
-	
+
 	$rh->{'telemetry'} = \%t;
 	#warn 'ok: ' . Dumper(\%t);
 	return 1;
@@ -2425,7 +2425,7 @@ my $ret = parseaprs("OH2XYZ>APRS,RELAY*,WIDE:!2345.56N/12345.67E-PHG0123 hi",
 sub parseaprs($$;%) {
 	my($packet, $rethash, %options) = @_;
 	my $isax25 = ($options{'isax25'}) ? 1 : 0;
-	
+
 	if (!defined $packet) {
 		_a_err($rethash, 'packet_no');
 		return 0;
@@ -2434,7 +2434,7 @@ sub parseaprs($$;%) {
 		_a_err($rethash, 'packet_short');
 		return 0;
 	}
-	
+
 	# Separate the header and packet body on the first
 	# colon.
 	my ($header, $body) = split(/:/, $packet, 2);
@@ -2488,7 +2488,7 @@ sub parseaprs($$;%) {
 		_a_err($rethash, 'dstcall_none');
 		return 0;
 	}
-	
+
 	# Destination callsign. We are strict here, there
 	# should be no need to use a non-AX.25 compatible
 	# destination callsigns in the APRS-IS.
@@ -2523,7 +2523,7 @@ sub parseaprs($$;%) {
 		}
 	} else {
 		my $seen_qconstr = 0;
-		
+
 		foreach my $digi (@pathcomponents) {
 			# From the internet. Apply the same checks as for
 			# APRS-IS packet originator. Allow long hexadecimal IPv6
@@ -2543,7 +2543,7 @@ sub parseaprs($$;%) {
 		}
 	}
 	$rethash->{'digipeaters'} = \@digipeaters;
-	
+
 	# So now we have source and destination callsigns and
 	# digipeaters parsed and ok. Move on to the body.
 
@@ -2578,7 +2578,7 @@ sub parseaprs($$;%) {
 		} else {
 			$rethash->{'messaging'} = 1;
 		}
-		
+
 		if ($paclen >= 14) {
 			$rethash->{'type'} = 'location';
 			if ($packettype eq '/' || $packettype eq '@') {
@@ -2647,7 +2647,7 @@ sub parseaprs($$;%) {
 			_a_err($rethash, 'wx_unsupp', 'Positionless');
 			return 0;
 		}
-		
+
 	# Object
 	} elsif ($packettype eq ';') {
 		if ($paclen >= 31) {
@@ -2698,22 +2698,22 @@ sub parseaprs($$;%) {
 			$rethash->{'type'} = 'status';
 			return _status_parse(\%options, substr($body, 1), $srccallsign, $rethash);
 		}
-	
+
 	# Telemetry
 	} elsif ($body =~ /^T#(.*?),(.*)$/) {
 		$rethash->{'type'} = 'telemetry';
 		return _telemetry_parse(substr($body, 2), $rethash);
-		
+
 	# DX spot
 	} elsif ($body =~ /^DX\s+de\s+(.*?)\s*[:>]\s*(.*)$/i) {
 		$rethash->{'type'} = 'dx';
 		return _dx_parse($1, $2, $rethash);
-		
+
 	# Experimental
 	} elsif ($body =~ /^\{\{/i) {
 		_a_err($rethash, 'exp_unsupp');
 		return 0;
-		
+
 	# When all else fails, try to look for a !-position that can
 	# occur anywhere within the 40 first characters according
 	# to the spec.
@@ -2751,7 +2751,7 @@ sub parseaprs($$;%) {
 	if ($retval == 1) {
 		return 1;
 	}
-	
+
 	return 0;
 }
 
@@ -3081,7 +3081,7 @@ sub tnc2_to_kiss($) {
 					# last digipeater
 					$kissframe .= chr($hbit | 0x61 | ($ssid << 1));
 				}
-				
+
 			} else {
 				if ($debug > 0) {
 					warn "tnc2_to_kiss(): digipeater nr. $i parsing failed\n";
@@ -3296,7 +3296,7 @@ Creates an APRS position for position/object/item. Parameters:
  5th: altitude in meters above mean sea level, -10000 or under == don't use
  6th: aprs symbol to use, first table/overlay and then code (two bytes). If string length is zero (""), uses default.
  7th: hash reference for options:
- 
+
  "compressed": 1 for compressed format
  "ambiguity": Use amount (0..4) of position ambiguity. Note that position ambiguity and compression can't be used at the same time.
  "dao": Use !DAO! extension for improved precision
@@ -3318,11 +3318,11 @@ sub make_position($$$$$$;$)
 # FIXME: course/speed/altitude are not supported yet,
 #        neither is compressed format or position ambiguity
 	my($lat, $lon, $speed, $course, $altitude, $symbol, $options) = @_;
-	
+
 	if (!$options) {
 		$options = { };
 	}
-	
+
 	if ($options->{'ambiguity'}) {
 		# can't be ambiguous and then add precision with !DAO!
 		delete $options->{'dao'};
@@ -3459,9 +3459,9 @@ sub make_position($$$$$$;$)
 		} else {
 			$lonstring .= "W";
 		}
-		
+
 		my $retstring;
-		
+
 		if ($options->{'timestamp'}) {
 			my($sec,$min,$hour) = gmtime($options->{'timestamp'});
 			$retstring = sprintf('/%02d%02d%02dh', $hour, $min, $sec);
@@ -3469,7 +3469,7 @@ sub make_position($$$$$$;$)
 			$retstring = '!';
 		}
 		$retstring .= $latstring . $symboltable . $lonstring . $symbolcode;
-		
+
 		# add course/speed, if given
 		if (defined $speed && defined $course && $speed >= 0 && $course >= 0) {
 			# convert speed to knots
@@ -3482,8 +3482,8 @@ sub make_position($$$$$$;$)
 			}
 			$retstring .= sprintf("%03d/%03d", $course, $speed);
 		}
-		
-		if (defined $altitude) {
+
+		if (defined $altitude && $altitude > -10000) {
 			$altitude = $altitude / $feet_to_meters;
 			# /A=(-\d{5}|\d{6})
 			if ($altitude >= 0) {
@@ -3492,18 +3492,18 @@ sub make_position($$$$$$;$)
 				$retstring .= sprintf("/A=-%05.0f", $altitude * -1);
 			}
 		}
-		
+
 		if ($options->{'comment'}) {
 			$retstring .= $options->{'comment'};
 		}
-		
+
 		if ($options->{'dao'}) {
 			# !DAO! extension, use Base91 format for best precision
 			# /1.1 : scale from 0.99 to 0..90 for base91, int(... + 0.5): round to nearest integer
 			my $dao = '!w' . chr(int($latmin_dao/1.1 + 0.5) + 33) . chr(int($lonmin_dao/1.1 + 0.5) + 33) . '!';
 			$retstring .= $dao;
 		}
-		
+
 		return $retstring;
 	}
 }
